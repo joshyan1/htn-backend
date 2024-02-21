@@ -16,14 +16,14 @@ The `users` table is used to store all user information. It contains the followi
 The `skills` table contains the following data fields:
 
 `skillid (int)`: Primary key used as a unique identifier for the skill \
-`skill (str)`: Skill's name. Unique field preventing duplicate skills
+`skill (str)`: Skill's name. Unique field preventing duplicate skills \
 `frequency (int)`: Number of users with this skill
 
 The `user_skills` table contains the following data:
 
 `id (int)`: Primary key used as a unique identifier for the user-skill relationship \
-`user_id (int)`: The ID of the user
-`skill_id (int)`: The Id of the skill
+`user_id (int)`: The ID of the user \
+`skill_id (int)`: The Id of the skill \
 `rating (int)`: User's skill rating
 
 ## API
