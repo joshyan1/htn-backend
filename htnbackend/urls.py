@@ -25,4 +25,8 @@ urlpatterns = [
     path('insert-data/', views.insert, name='insert-data'),
     path('users/', views.all_users,),
     path('users/<int:user_id>', views.user_data, name='user-data'),
+    path('skills/', views.get_skills, name='get-skills'),
+    path('skills/<str:skill_name>', views.get_user_skills, name='user_skills'),
+    path('register', views.register, name='register')
+    
 ]

@@ -1,8 +1,100 @@
 import requests
-from django.http import JsonResponse, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponse
 import json
 from .models import *
 from django.views.decorators.csrf import csrf_exempt
+from django.db import connection
+from django.db.models import Q
+
+def get_filtered_skills(min_frequency, max_frequency, name):
+    query = skills.objects.none()
+
+    conditions = Q()
+
+    if min_frequency is not None:
+        conditions &= Q(frequency__gte=min_frequency)
+
+    if max_frequency is not None:
+        conditions &= Q(frequency__lte=max_frequency)
+
+    if name is not None:
+        conditions &= Q(skill__icontains=name)
+
+    # If there are any conditions, apply them to the query
+    print(conditions)
+
+    if conditions:
+        query = skills.objects.filter(conditions).values()
+    else:
+        query = skills.objects.all().values()
+
+    return query
+
+#http://localhost:8000/skills
+def get_skills(request):
+    min_freq = request.GET.get('min-freq')
+    max_freq = request.GET.get('max-freq')
+    name = request.GET.get('name')
+
+    skills = ""
+    output = {}
+
+    try:
+        skills = get_filtered_skills(min_freq, max_freq, name)
+
+    except: 
+        return HttpResponse("Failed to retrieve skills", status=400)
+
+    for skill in skills:
+
+        frequency = skill['frequency']
+        skill_name = skill['skill']
+
+        output[skill_name] = {
+            'frequency': frequency,
+
+        }
+     
+    
+    return JsonResponse(output, status=200, json_dumps_params={'indent': 4})
+
+def get_user_skills(request, skill_name):
+    order = request.GET.get('order')
+
+    skill_response = {}
+    try:   
+ 
+        skill_data = skills.objects.filter(skill=skill_name).values().first()
+
+        skill_response[skill_name] = {
+            'frequency':skill_data['frequency'],
+            'users': {
+
+            }
+        }
+        users = ""
+
+        if order == "rating":
+            users = user_skills.objects.select_related('user').filter(skill_id=skill_data['skillid']).order_by(order)
+
+        else:
+            users = user_skills.objects.select_related('user').filter(skill_id=skill_data['skillid'])
+
+        for user in users:
+            user_id = user.user_id
+            rating = user.rating
+            user_name = user.user.name
+            user_contact = user.user.email
+
+            skill_response[skill_name]['users'][user_name] = {
+                'rating': rating,
+                'email': user_contact,
+            }
+
+    except:
+        return HttpResponse("Skill does not exist", status=400)
+
+    return JsonResponse(skill_response, status=200, json_dumps_params={'indent': 4})
 
 
 #http://localhost:8000/users/#id
@@ -90,6 +182,7 @@ def user_data(request, user_id):
 
    
 def get_user_data(user):
+
     uid = user['userid']
     person_skills = {
         'skills': []
@@ -117,7 +210,20 @@ def all_users(request):
 
     output = []
 
-    data = users.objects.all().values()
+    order = request.GET.get('order')
+    name = request.GET.get('name')
+    conditions = Q()
+
+    if name is not None:
+        conditions &= Q(name__icontains=name)
+    
+    if order == "name" or order == "email" or order == "company":
+        data = users.objects.all().values().order_by(order)
+    else:
+        data = users.objects.all().values()
+
+    data = data.filter(conditions)
+
     for e in data:
         output.append(get_user_data(e))
 
@@ -126,6 +232,12 @@ def all_users(request):
 
 #save data into database by visiting localhost:8000/insert-data
 def insert(request):
+
+    #reset tables
+    with connection.cursor() as cursor:
+        cursor.execute("TRUNCATE TABLE users RESTART IDENTITY CASCADE;")
+        cursor.execute("TRUNCATE TABLE skills RESTART IDENTITY CASCADE;")
+
     #insert data into database
     user_data = requests.get("https://gist.githubusercontent.com/DanielYu842/607c1ae9c63c4e83e38865797057ff8f/raw/b84b8bce73fadb341258e86265a6091779908344/HTN_2023_BE_Challenge_Data.json").json()
     
@@ -133,6 +245,18 @@ def insert(request):
         new_entry(person)
 
     return JsonResponse({'done': "yes"}, status=200)
+
+@csrf_exempt #for testing
+def register(request):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(['POST'])
+
+    data = json.loads(request.body)
+    if new_entry(data):
+        return HttpResponse(data['email'] + " is already in use", status=400)
+
+    return JsonResponse(data, status=200, json_dumps_params= {'indent':4})
+
     
 def new_entry(data):
     new_user = users(
@@ -143,12 +267,12 @@ def new_entry(data):
     )
 
     if users.objects.filter(email=data['email']).exists():
-        print(data['name'] + " is already present in the database")
-        return
+        return True
     
     new_user.save()
 
     insert_skills(data['skills'], new_user)
+    return False
 
 def insert_skills(input_skills, user):
 
