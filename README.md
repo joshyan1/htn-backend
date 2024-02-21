@@ -9,7 +9,7 @@ The `users` table is used to store all user information. It contains the followi
 
 `userid (int)`: Primary key used as unique identifier for the user \
 `name (str)`: User's name \
-`company (str)`: User's company
+`company (str)`: User's company \
 `email (str)`: User's email. This is a unique field which prevents duplicate registrations with the same email \
 `phone (str)`: User's phone number. 
 
@@ -21,9 +21,10 @@ The `skills` table contains the following data fields:
 
 The `user_skills` table contains the following data:
 
-`id (int)`: Primary key used as a unique identifier for the user-skill
-`user_id (int)`: The ID of the user who has this skill in a one-to-one relationship with `users` table
-`skill_id (int)`: The ID of the skill as a one-to-one relationship with the 
+`id (int)`: Primary key used as a unique identifier for the user-skill relationship \
+`user_id (int)`: The ID of the user
+`skill_id (int)`: The Id of the skill
+`rating (int)`: User's skill rating
 
 
 
