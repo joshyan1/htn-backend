@@ -20,9 +20,6 @@ def get_filtered_skills(min_frequency, max_frequency, name):
     if name is not None:
         conditions &= Q(skill__icontains=name)
 
-    # If there are any conditions, apply them to the query
-    print(conditions)
-
     if conditions:
         query = skills.objects.filter(conditions).values()
     else:
