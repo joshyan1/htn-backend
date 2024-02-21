@@ -79,7 +79,9 @@ Example Response:
         "skill": "Foundation",
         "rating": 4
       },
+    ]
   },
+
   ...
 }
 ```
