@@ -1,6 +1,8 @@
 # Hack The North Backend Challenge
+Hi, this is my HTN Backend Challenge submission. I hope you guys like it. Thanks for your time and consideration.
 
-## 
+Me and you guys when we work on HTN together.
+![t1](https://pbs.twimg.com/media/ELO6--zVAAA3woI.jpg)
 
 ## Database 
 The Hack The North Backend database currently makes use of 3 tables: `users`, `user_skills`, and `skills`
