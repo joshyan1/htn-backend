@@ -74,7 +74,7 @@ def get_user_skills(request, skill_name):
         }
         users = ""
 
-        if order == "rating":
+        if order == "rating" or order == "name":
             users = user_skills.objects.select_related('user').filter(skill_id=skill_data['skillid']).order_by(order)
 
         else:
@@ -159,6 +159,14 @@ def user_data(request, user_id):
                                 )
 
                                 skill.save()
+                                new_user_skills = user_skills(
+                                    user = user_obj,
+                                    skill = skill_obj,
+                                    rating = skill['rating']
+                                )
+
+                                new_user_skills.save()
+                                
                             
 
                     #ignore invalid keys
