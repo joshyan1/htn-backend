@@ -26,15 +26,8 @@ The `user_skills` table contains the following data:
 `skill_id (int)`: The Id of the skill
 `rating (int)`: User's skill rating
 
-
-
-
-
-
-
-
 ## API
-`GET /users`: Get all user data, ordered by user ID. Optional ordering by name, email, and company. \
+`GET /users`: Get all user data, ordered by user ID. Optional ordering by name, email, and company; optional filtering by name. \
 `GET /users/<int:user_id>`: Gets user info by ID. \
 `PUT /users/<int:user_id>`: Updates user info by ID. \
 `GET /insert-data`: Resets tables and inserts data according to selected JSON. \
