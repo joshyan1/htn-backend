@@ -9,5 +9,5 @@
 `GET /insert-data`: Resets tables and inserts data according to selected JSON. \
 `POST /register`: Registers a new user. \
 `GET /skills`: Get all skills data. Optional filtering by frequency and name. \
-`GET /skills/<str:skill_name>`: Get users associated with skill. Optional ordering by rating. \
+`GET /skills/<str:skill_name>`: Get users associated with skill. Optional ordering by rating. 
 
