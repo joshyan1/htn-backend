@@ -23,7 +23,7 @@ The `user_skills` table contains the following data:
 
 `id (int)`: Primary key used as a unique identifier for the user-skill relationship \
 `user_id (int)`: The ID of the user \
-`skill_id (int)`: The Id of the skill \
+`skill_id (int)`: The ID of the skill \
 `rating (int)`: User's skill rating
 
 ## API
