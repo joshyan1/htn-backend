@@ -74,7 +74,7 @@ def get_user_skills(request, skill_name):
         }
         users = ""
 
-        if order == "rating" or order == "name":
+        if order == "rating":
             users = user_skills.objects.select_related('user').filter(skill_id=skill_data['skillid']).order_by(order)
 
         else:
