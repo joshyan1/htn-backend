@@ -51,38 +51,38 @@ Example Response:
 ```json
 {
   [
-  {
-    "userid": 1,
-    "name": "Breanna Dillon",
-    "company": "Jackson Ltd",
-    "email": "lorettabrown@example.net",
-    "phone": "+1-924-116-7963",
-    "skills": [
-      {
-        "skill": "Swift",
-        "rating": 4
-      },
-      {
-        "skill": "OpenCV",
-        "rating": 1
-      }
-    ]
-  },
-  {
-    "userid": 2,
-    "name": "Kimberly Wilkinson",
-    "company": "Moon, Mendoza and Carter",
-    "email": "frederickkyle@example.org",
-    "phone": "(186)579-0542",
-    "skills": [
-      {
-        "skill": "Foundation",
-        "rating": 4
-      },
-    ]
-  },
-
+    {
+      "userid": 1,
+      "name": "Breanna Dillon",
+      "company": "Jackson Ltd",
+      "email": "lorettabrown@example.net",
+      "phone": "+1-924-116-7963",
+      "skills": [
+        {
+          "skill": "Swift",
+          "rating": 4
+        },
+        {
+          "skill": "OpenCV",
+          "rating": 1
+        }
+      ]
+    },
+    {
+      "userid": 2,
+      "name": "Kimberly Wilkinson",
+      "company": "Moon, Mendoza and Carter",
+      "email": "frederickkyle@example.org",
+      "phone": "(186)579-0542",
+      "skills": [
+        {
+          "skill": "Foundation",
+          "rating": 4
+        },
+      ]
+    },
   ...
+  ]
 }
 ```
 
